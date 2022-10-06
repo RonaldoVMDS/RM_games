@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rm_games/login.dart';
 
-
 class MeuAplicativo extends StatelessWidget {
   const MeuAplicativo({Key? key}) : super(key: key);
 

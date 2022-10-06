@@ -10,19 +10,19 @@ class ProdutoDetalhes extends StatefulWidget {
   final prodDetalhesFoto;
   final prodDetalhesPreco;
   final prodDetalhesCategoria;
-  final prodDetalhesLancamento; 
-  final prodDetalhesPlataforma; 
+  final prodDetalhesLancamento;
+  final prodDetalhesPlataforma;
   final prodDetalhesDescricao;
 
-  const ProdutoDetalhes({Key? key,
-      this.prodDetalhesNome,
-      this.prodDetalhesFoto,
-      this.prodDetalhesPreco,
-      this.prodDetalhesCategoria,
-      this.prodDetalhesLancamento, 
-      this.prodDetalhesPlataforma, 
-      this.prodDetalhesDescricao,
-  
+  const ProdutoDetalhes({
+    Key? key,
+    this.prodDetalhesNome,
+    this.prodDetalhesFoto,
+    this.prodDetalhesPreco,
+    this.prodDetalhesCategoria,
+    this.prodDetalhesLancamento,
+    this.prodDetalhesPlataforma,
+    this.prodDetalhesDescricao,
   }) : super(key: key);
 
   @override
@@ -37,34 +37,48 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
         elevation: 0.2,
         title: const Text('RM Games'),
         actions: <Widget>[
-          IconButton(icon: const Icon(Icons.search), color: Colors.white, onPressed: () {  },),
-          IconButton(icon: const Icon(Icons.shopping_cart), color: Colors.white, onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const Carrinho())); },),
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Carrinho()));
+            },
+          ),
         ],
       ),
-
       body: ListView(
         children: <Widget>[
           SizedBox(
-              child: CarouselSlider(
-  options: CarouselOptions(height: 220.0, enlargeCenterPage: true, autoPlay: true,),
-  items: ['${widget.prodDetalhesFoto[0]}', '${widget.prodDetalhesFoto[1]}', '${widget.prodDetalhesFoto[2]}'].map((i) {
-    return Builder(
-      builder: (BuildContext context) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Image.asset(i)
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 220.0,
+                enlargeCenterPage: true,
+                autoPlay: true,
+              ),
+              items: [
+                '${widget.prodDetalhesFoto[0]}',
+                '${widget.prodDetalhesFoto[1]}',
+                '${widget.prodDetalhesFoto[2]}'
+              ].map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child:
+                            FittedBox(fit: BoxFit.fill, child: Image.asset(i)));
+                  },
+                );
+              }).toList(),
+            ),
           )
-        );
-      },
-    );
-  }).toList(),
-),
-              )
         ],
       ),
-
     );
   }
 }

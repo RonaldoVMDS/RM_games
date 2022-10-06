@@ -17,10 +17,23 @@ class TelaPrincipal extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.2,
-        title: const Text('RM Games', ),
+        title: const Text(
+          'RM Games',
+        ),
         actions: <Widget>[
-          IconButton(icon: const Icon(Icons.search), color: Colors.white, onPressed: () {  },),
-          IconButton(icon: const Icon(Icons.shopping_cart), color: Colors.white, onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const Carrinho())); },),
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Carrinho()));
+            },
+          ),
         ],
       ),
       drawer: Drawer(
@@ -36,10 +49,12 @@ class TelaPrincipal extends StatelessWidget {
                 ),
               ),
             ),
-            
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaPrincipal()));
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TelaPrincipal()));
               },
               child: const ListTile(
                 title: Text('Página Inicial'),
@@ -47,15 +62,16 @@ class TelaPrincipal extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: (){},
+              onTap: () {},
               child: const ListTile(
                 title: Text('Todos os Jogos'),
                 leading: Icon(Icons.gamepad, color: Colors.red),
               ),
             ),
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Carrinho()));
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Carrinho()));
               },
               child: const ListTile(
                 title: Text('Meu Carrinho'),
@@ -63,8 +79,9 @@ class TelaPrincipal extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Login()));
               },
               child: const ListTile(
                 title: Text('Sair'),
@@ -74,7 +91,6 @@ class TelaPrincipal extends StatelessWidget {
           ],
         ),
       ),
-
       body: ListView(
         //começo do corpo da pag inicial
         children: <Widget>[
@@ -84,8 +100,14 @@ class TelaPrincipal extends StatelessWidget {
           //Texto categorias
           const Padding(
             padding: EdgeInsets.all(12.0),
-            child: Text('Categorias', 
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 14, 133, 16)),),),
+            child: Text(
+              'Categorias',
+              style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 14, 133, 16)),
+            ),
+          ),
           //Fim texto categorias
 
           //Lista de categorias
@@ -95,14 +117,20 @@ class TelaPrincipal extends StatelessWidget {
           //Texto Lançamentos
           Padding(
             padding: const EdgeInsets.all(12.0),
-             child: Row(
-               // ignore: prefer_const_literals_to_create_immutables
-               children: [
-                 const Text("Lançamentos", 
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 14, 133, 16)),),
-                  const Icon(Icons.star, color: Colors.orange),
-               ],
-             ),),
+            child: Row(
+              // ignore: prefer_const_literals_to_create_immutables
+              children: [
+                const Text(
+                  "Lançamentos",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 14, 133, 16)),
+                ),
+                const Icon(Icons.star, color: Colors.orange),
+              ],
+            ),
+          ),
 
           //Fim texto Lançamentos
 
@@ -111,11 +139,10 @@ class TelaPrincipal extends StatelessWidget {
           // ignore: prefer_const_constructors
           SizedBox(
             height: 450.00,
-            child:  const Produtos(),
+            child: const Produtos(),
           )
 
           //Grid de jogos em lançamento
-
         ],
       ),
     );

@@ -13,7 +13,11 @@ class _ProdutosCarrinhoState extends State<ProdutosCarrinho> {
   var prodCarrinho = [
     {
       "nome": 'Saints Row',
-      "foto": ['images/produtos/saintsrow/1.png', 'images/produtos/saintsrow/2.png', 'images/produtos/saintsrow/3.png'],
+      "foto": [
+        'images/produtos/saintsrow/1.png',
+        'images/produtos/saintsrow/2.png',
+        'images/produtos/saintsrow/3.png'
+      ],
       "preco": 120,
       "categoria": '',
       "lancamento": '23/08/22',
@@ -21,10 +25,13 @@ class _ProdutosCarrinhoState extends State<ProdutosCarrinho> {
       "descricao": '',
       "quantidade": 1
     },
-    
     {
       "nome": 'Stray',
-      "foto": ['images/produtos/stray/1.png', 'images/produtos/stray/2.png', 'images/produtos/stray/3.png'],
+      "foto": [
+        'images/produtos/stray/1.png',
+        'images/produtos/stray/2.png',
+        'images/produtos/stray/3.png'
+      ],
       "preco": 120,
       "categoria": '',
       "lancamento": '19/07/2022',
@@ -34,7 +41,11 @@ class _ProdutosCarrinhoState extends State<ProdutosCarrinho> {
     },
     {
       "nome": 'Horizon FW',
-      "foto": ['images/produtos/horizonfw/1.png', 'images/produtos/horizonfw/2.png', 'images/produtos/horizonfw/3.png'],
+      "foto": [
+        'images/produtos/horizonfw/1.png',
+        'images/produtos/horizonfw/2.png',
+        'images/produtos/horizonfw/3.png'
+      ],
       "preco": 120,
       "categoria": '',
       "lancamento": '18/02/2022',
@@ -49,15 +60,16 @@ class _ProdutosCarrinhoState extends State<ProdutosCarrinho> {
     return ListView.builder(
       itemCount: prodCarrinho.length,
       itemBuilder: (context, index) => ProdutoCarrinho(
-          prodNomeCarrinho: prodCarrinho[index]["nome"],
-          prodFotoCarrinho: prodCarrinho[index]['foto'],
-          prodPrecoCarrinho: prodCarrinho[index]['preco'],
-          prodCategoriaCarrinho: prodCarrinho[index]['categoria'],
-          prodLancamentoCarrinho: prodCarrinho[index]['lancamento'], 
-          prodPlataformaCarrinho: prodCarrinho[index]['plataforma'], 
-          prodDescricaoCarrinho: prodCarrinho[index]['descricao'],
-          prodQuantidadeCarrinho: prodCarrinho[index]['quantidade'],
-      ),);
+        prodNomeCarrinho: prodCarrinho[index]["nome"],
+        prodFotoCarrinho: prodCarrinho[index]['foto'],
+        prodPrecoCarrinho: prodCarrinho[index]['preco'],
+        prodCategoriaCarrinho: prodCarrinho[index]['categoria'],
+        prodLancamentoCarrinho: prodCarrinho[index]['lancamento'],
+        prodPlataformaCarrinho: prodCarrinho[index]['plataforma'],
+        prodDescricaoCarrinho: prodCarrinho[index]['descricao'],
+        prodQuantidadeCarrinho: prodCarrinho[index]['quantidade'],
+      ),
+    );
   }
 }
 
@@ -66,18 +78,19 @@ class ProdutoCarrinho extends StatelessWidget {
   final prodFotoCarrinho;
   final prodPrecoCarrinho;
   final prodCategoriaCarrinho;
-  final prodLancamentoCarrinho; 
-  final prodPlataformaCarrinho; 
+  final prodLancamentoCarrinho;
+  final prodPlataformaCarrinho;
   final prodDescricaoCarrinho;
   final prodQuantidadeCarrinho;
 
-  const ProdutoCarrinho({Key? key,
+  const ProdutoCarrinho({
+    Key? key,
     this.prodNomeCarrinho,
     this.prodFotoCarrinho,
     this.prodPrecoCarrinho,
     this.prodCategoriaCarrinho,
-    this.prodLancamentoCarrinho, 
-    this.prodPlataformaCarrinho, 
+    this.prodLancamentoCarrinho,
+    this.prodPlataformaCarrinho,
     this.prodDescricaoCarrinho,
     this.prodQuantidadeCarrinho,
   }) : super(key: key);
@@ -86,37 +99,60 @@ class ProdutoCarrinho extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Image.asset(prodFotoCarrinho[0], width: 80, height: 80,),
+        leading: Image.asset(
+          prodFotoCarrinho[0],
+          width: 80,
+          height: 80,
+        ),
         title: Text(prodNomeCarrinho),
         subtitle: Column(
           children: <Widget>[
             Row(
               children: <Widget>[
                 //plataforma
-                const Padding(padding: EdgeInsets.all(0),
-                child: Text("Plataforma: ", style: TextStyle(fontSize: 12),)
-                ,),
-                Padding(padding: const EdgeInsets.all(1),
-                child: Text(prodPlataformaCarrinho, style: const TextStyle(fontSize: 12),)
+                const Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    "Plataforma: ",
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
+                Padding(
+                    padding: const EdgeInsets.all(1),
+                    child: Text(
+                      prodPlataformaCarrinho,
+                      style: const TextStyle(fontSize: 12),
+                    )),
               ],
             ),
-
             Row(
               children: <Widget>[
-                const Padding(padding: EdgeInsets.all(0),
-                child: Text("Lançamento:", style: TextStyle(fontSize: 12),),),
-                Padding(padding: const EdgeInsets.all(1),
-                child: Text(prodLancamentoCarrinho, style: const TextStyle(fontSize: 12),)
+                const Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Text(
+                    "Lançamento:",
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
+                Padding(
+                    padding: const EdgeInsets.all(1),
+                    child: Text(
+                      prodLancamentoCarrinho,
+                      style: const TextStyle(fontSize: 12),
+                    )),
               ],
             ),
             Container(
               alignment: Alignment.topLeft,
-              child: Text('R\$: $prodPrecoCarrinho', style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 14, 133, 16))),),
+              child: Text('R\$: $prodPrecoCarrinho',
+                  style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 14, 133, 16))),
+            ),
           ],
         ),
       ),
     );
-}
+  }
 }
