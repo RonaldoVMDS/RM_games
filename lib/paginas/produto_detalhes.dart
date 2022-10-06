@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:carousel_pro/carousel_pro.dart';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:rm_games/componentes/carrossel_imagens-produto.dart';
 import 'package:rm_games/paginas/carrinho.dart';
 
 class ProdutoDetalhes extends StatefulWidget {
@@ -45,30 +45,23 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
       body: ListView(
         children: <Widget>[
           SizedBox(
-            height: 260,
-            child: GridTile(
-              child: Container(
-                child: carrosselImagensProduto = SizedBox(
-                  height: 260.0,
-                  child: Carousel(
-                    boxFit: BoxFit.cover,
-                    // ignore: prefer_const_literals_to_create_immutables
-                    images: [
-                      AssetImage("${widget.prodDetalhesFoto[0]}"),
-                      AssetImage("${widget.prodDetalhesFoto[1]}"),
-                      AssetImage("${widget.prodDetalhesFoto[2]}"),
-                    ], 
-        dotSize: 3,
-        showIndicator: false,
-        indicatorBgPadding: 3.5,
-        dotIncreaseSize: 3,
-        autoplay: true,
-        animationDuration: const Duration(milliseconds: 1300),
-      ),
-    ),
-    )
+              child: CarouselSlider(
+  options: CarouselOptions(height: 220.0, enlargeCenterPage: true, autoPlay: true,),
+  items: ['${widget.prodDetalhesFoto[0]}', '${widget.prodDetalhesFoto[1]}', '${widget.prodDetalhesFoto[2]}'].map((i) {
+    return Builder(
+      builder: (BuildContext context) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: FittedBox(
+            fit: BoxFit.fill,
+            child: Image.asset(i)
+          )
+        );
+      },
+    );
+  }).toList(),
+),
               )
-              ),
         ],
       ),
 

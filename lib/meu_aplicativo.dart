@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rm_games/login.dart';
-import 'package:rm_games/paginas/tela_principal.dart';
 
 
 class MeuAplicativo extends StatelessWidget {

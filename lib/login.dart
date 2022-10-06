@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
         gradient: LinearGradient(
         begin: Alignment.topRight,
         end: Alignment.bottomLeft,
-        colors: [Color.fromARGB(255, 255, 255, 255), Color.fromARGB(255, 151, 248, 216)]),
+        colors: [Color.fromRGBO(64, 164, 137, 1), Color.fromRGBO(192, 227, 220, 1)]),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -60,7 +60,7 @@ Widget _icone(){
 
 Widget _campos(String placeHolder, TextEditingController controller, {isPassword = false}){
   var borda = OutlineInputBorder(
-    borderRadius: BorderRadius.circular(18),
+    borderRadius: BorderRadius.circular(9),
     borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)));
     return TextField(
       style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
@@ -95,11 +95,14 @@ Widget _botaoLogin(){
       ), 
   child: const SizedBox(
     width: double.infinity,
-    child: Text(
-      "Entrar", 
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 23),
-      )),
+    child: Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text(
+        "Entrar", 
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 32),
+        ),
+    )),
       );
 }
 }
