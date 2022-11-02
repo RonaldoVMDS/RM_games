@@ -77,7 +77,6 @@ class TelaPrincipal extends StatelessWidget {
           ],
         ),
       ),
-
       body: ListView(
         //começo do corpo da pag inicial
         children: <Widget>[
