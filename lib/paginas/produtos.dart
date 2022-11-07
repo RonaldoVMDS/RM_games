@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../componentes/lista_categorias.dart';
 import '../componentes/produtos.dart';
-import '../login.dart';
+import 'login.dart';
 import 'carrinho.dart';
 import 'tela_principal.dart';
 

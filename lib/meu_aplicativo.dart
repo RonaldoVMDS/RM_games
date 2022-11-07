@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rm_games/login.dart';
+import 'package:rm_games/componentes/auth_check.dart';
 
 class MeuAplicativo extends StatelessWidget {
   const MeuAplicativo({Key? key}) : super(key: key);
@@ -12,7 +12,7 @@ class MeuAplicativo extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const Login(),
+      home: const AuthCheck(),
       // home: const TelaPrincipal(),
     );
   }

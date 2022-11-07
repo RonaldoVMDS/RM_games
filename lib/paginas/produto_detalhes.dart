@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:rm_games/componentes/divider.dart';
 import 'package:rm_games/paginas/carrinho.dart';
 
 class ProdutoDetalhes extends StatefulWidget {
@@ -7,19 +8,19 @@ class ProdutoDetalhes extends StatefulWidget {
   final dynamic prodDetalhesFoto;
   final dynamic prodDetalhesPreco;
   final dynamic prodDetalhesCategoria;
-  final dynamic prodDetalhesLancamento; 
-  final dynamic prodDetalhesPlataforma; 
+  final dynamic prodDetalhesLancamento;
+  final dynamic prodDetalhesPlataforma;
   final dynamic prodDetalhesDescricao;
 
-  const ProdutoDetalhes({Key? key,
-      this.prodDetalhesNome,
-      this.prodDetalhesFoto,
-      this.prodDetalhesPreco,
-      this.prodDetalhesCategoria,
-      this.prodDetalhesLancamento, 
-      this.prodDetalhesPlataforma, 
-      this.prodDetalhesDescricao,
-  
+  const ProdutoDetalhes({
+    Key? key,
+    this.prodDetalhesNome,
+    this.prodDetalhesFoto,
+    this.prodDetalhesPreco,
+    this.prodDetalhesCategoria,
+    this.prodDetalhesLancamento,
+    this.prodDetalhesPlataforma,
+    this.prodDetalhesDescricao,
   }) : super(key: key);
 
   @override
@@ -34,90 +35,175 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
         elevation: 0.2,
         title: const Text('RM Games'),
         actions: <Widget>[
-          IconButton(icon: const Icon(Icons.search), color: Colors.white, onPressed: () {  },),
-          IconButton(icon: const Icon(Icons.shopping_cart), color: Colors.white, onPressed: () { Navigator.push(context, MaterialPageRoute(builder: (context) => const Carrinho())); },),
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const Carrinho()));
+            },
+          ),
         ],
       ),
-
       body: ListView(
         children: <Widget>[
           SizedBox(
-              child: CarouselSlider(
-  options: CarouselOptions(height: 200.0, enlargeCenterPage: true, autoPlay: true,),
-  items: ['${widget.prodDetalhesFoto[0]}', '${widget.prodDetalhesFoto[1]}', '${widget.prodDetalhesFoto[2]}'].map((i) {
-    return Builder(
-      builder: (BuildContext context) {
-        return SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: FittedBox(
-            fit: BoxFit.fill,
-            child: Image.asset(i)
-          )
-        );
-      },
-    );
-  }).toList(),
-),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 200.0,
+                enlargeCenterPage: true,
+                autoPlay: true,
               ),
-              Container(
-                height: 50,
-                alignment: Alignment.center, 
-                child: Text(
-                  "${widget.prodDetalhesNome} - RS ${widget.prodDetalhesPreco}",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 30),
-                )),
-                Container(
-                height: 120,
-                alignment: Alignment.center, 
-                child: Text(
-                  "${widget.prodDetalhesDescricao}",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
-                )),
-                Container(
-                height: 80,
-                alignment: Alignment.center, 
-                child: Text(
-                  "Plataformas: ${widget.prodDetalhesPlataforma}",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
-                )),
-                Container(
-                height: 80,
-                alignment: Alignment.center, 
-                child: Text(
-                  "Categoria: ${widget.prodDetalhesCategoria}",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 15),
-                )),
-                const SizedBox(height: 20),
-                _botaoComprar(),
+              items: [
+                '${widget.prodDetalhesFoto[0]}',
+                '${widget.prodDetalhesFoto[1]}',
+                '${widget.prodDetalhesFoto[2]}'
+              ].map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child:
+                            FittedBox(fit: BoxFit.fill, child: Image.asset(i)));
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Text(
+                          "${widget.prodDetalhesNome}",
+                          maxLines: 2,
+                          style: const TextStyle(
+                              fontSize: 22.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        "R\$ ${widget.prodDetalhesPreco}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color.fromRGBO(0, 0, 0, 0.7)),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: MaterialButton(
+                      onPressed: () {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text(
+                              "Item adicionado ao carrinho!",
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.green,
+                          ));
+                      },
+                      color: const Color.fromARGB(255, 14, 133, 16),
+                      textColor: Colors.white,
+                      elevation: 0.2,
+                      child: const Text("Adicionar ao Carrinho"),
+                    ),
+                        ))
+                  ],
+                ),
+                SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Text("${widget.prodDetalhesDescricao}",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 19,
+                            color: Color.fromRGBO(0, 0, 0, 0.7))),
+                  ),
+                ),
+                divisor,
+                SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Text("Categorias: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                        Text("${widget.prodDetalhesCategoria}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 19,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Row(
+                      children: [
+                        const Text("Plataformas: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                        Text("${widget.prodDetalhesPlataforma}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 19,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        const Text("Data de Laçamento: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                        Text("${widget.prodDetalhesLancamento}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 19,
+                                color: Color.fromRGBO(0, 0, 0, 0.7))),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-
     );
   }
-
-  Widget _botaoComprar(){
-    return ElevatedButton(onPressed: (){
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Item adicionado ao carrinho!", textAlign: TextAlign.center,),
-        backgroundColor: Colors.green,)
-      );
-  }, style: ElevatedButton.styleFrom(
-        primary: const Color.fromARGB(255, 14, 133, 16),
-        onPrimary: const Color.fromARGB(255, 255, 255, 255),
-      ), 
-  child: const SizedBox(
-    width: double.infinity,
-    child: Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Text(
-        "Comprar", 
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 32),
-        ),
-    )),);
-}
 }

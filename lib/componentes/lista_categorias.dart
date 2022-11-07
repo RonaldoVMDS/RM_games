@@ -6,7 +6,7 @@ class ListaCategorias extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 90.0,
+      height: 50.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: const <Widget>[
@@ -45,15 +45,15 @@ class Categoria extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(0.0),
+      padding: const EdgeInsets.all(1.0),
         child: InkWell(onTap: (){},
         child: SizedBox(
-          width: 100.0,
+          width: 95.0,
           child: ListTile(
               title: Image.asset(
                 imagem,
-                width: 100.0,
-                height: 70.0,          
+                width: 40.0,
+                height: 40.0,          
                 ),
               subtitle: Container(
                 alignment: Alignment.topCenter,
