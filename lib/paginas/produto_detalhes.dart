@@ -1,26 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rm_games/componentes/divider.dart';
+import 'package:rm_games/models/produto.dart';
 import 'package:rm_games/paginas/carrinho.dart';
+import 'package:rm_games/repositorios/carrinho_repositorio.dart';
 
 class ProdutoDetalhes extends StatefulWidget {
-  final dynamic prodDetalhesNome;
-  final dynamic prodDetalhesFoto;
-  final dynamic prodDetalhesPreco;
-  final dynamic prodDetalhesCategoria;
-  final dynamic prodDetalhesLancamento;
-  final dynamic prodDetalhesPlataforma;
-  final dynamic prodDetalhesDescricao;
+  final Produto produto;
 
   const ProdutoDetalhes({
     Key? key,
-    this.prodDetalhesNome,
-    this.prodDetalhesFoto,
-    this.prodDetalhesPreco,
-    this.prodDetalhesCategoria,
-    this.prodDetalhesLancamento,
-    this.prodDetalhesPlataforma,
-    this.prodDetalhesDescricao,
+    required this.produto
   }) : super(key: key);
 
   @override
@@ -28,8 +19,11 @@ class ProdutoDetalhes extends StatefulWidget {
 }
 
 class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
+  late CarrinhoRepositorio carrinho;
+
   @override
   Widget build(BuildContext context) {
+    carrinho = Provider.of<CarrinhoRepositorio>(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0.2,
@@ -60,9 +54,9 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                 autoPlay: true,
               ),
               items: [
-                '${widget.prodDetalhesFoto[0]}',
-                '${widget.prodDetalhesFoto[1]}',
-                '${widget.prodDetalhesFoto[2]}'
+                (widget.produto.prodFoto[0]),
+                (widget.produto.prodFoto[1]),
+                (widget.produto.prodFoto[2])
               ].map((i) {
                 return Builder(
                   builder: (BuildContext context) {
@@ -88,7 +82,7 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: Text(
-                          "${widget.prodDetalhesNome}",
+                          widget.produto.prodNome,
                           maxLines: 2,
                           style: const TextStyle(
                               fontSize: 22.0, fontWeight: FontWeight.bold),
@@ -98,7 +92,7 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                         height: 8,
                       ),
                       Text(
-                        "R\$ ${widget.prodDetalhesPreco}",
+                        "R\$ ${widget.produto.prodPreco}",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -111,9 +105,10 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                   children: <Widget>[
                     Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: MaterialButton(
-                      onPressed: () {
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: MaterialButton(
+                        onPressed: () {
+                          carrinho.saveAll(widget.produto);
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text(
@@ -122,19 +117,19 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                             ),
                             backgroundColor: Colors.green,
                           ));
-                      },
-                      color: const Color.fromARGB(255, 14, 133, 16),
-                      textColor: Colors.white,
-                      elevation: 0.2,
-                      child: const Text("Adicionar ao Carrinho"),
-                    ),
-                        ))
+                        },
+                        color: const Color.fromARGB(255, 14, 133, 16),
+                        textColor: Colors.white,
+                        elevation: 0.2,
+                        child: const Text("Adicionar ao Carrinho"),
+                      ),
+                    ))
                   ],
                 ),
                 SizedBox(
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
-                    child: Text("${widget.prodDetalhesDescricao}",
+                    child: Text(widget.produto.prodDescricao,
                         style: const TextStyle(
                             fontWeight: FontWeight.w300,
                             fontSize: 19,
@@ -152,7 +147,7 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 color: Color.fromRGBO(0, 0, 0, 0.7))),
-                        Text("${widget.prodDetalhesCategoria}",
+                        Text(widget.produto.prodCategoria,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 19,
@@ -171,7 +166,7 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 color: Color.fromRGBO(0, 0, 0, 0.7))),
-                        Text("${widget.prodDetalhesPlataforma}",
+                        Text(widget.produto.prodPlataforma,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 19,
@@ -190,7 +185,7 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 color: Color.fromRGBO(0, 0, 0, 0.7))),
-                        Text("${widget.prodDetalhesLancamento}",
+                        Text(widget.produto.prodLancamento,
                             style: const TextStyle(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 19,

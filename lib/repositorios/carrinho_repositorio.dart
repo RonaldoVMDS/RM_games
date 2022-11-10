@@ -2,17 +2,15 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:rm_games/componentes/produtos.dart';
+import 'package:rm_games/models/produto.dart';
 
 class CarrinhoRepositorio extends ChangeNotifier {
   final List<Produto> _lista = [];
 
   UnmodifiableListView<Produto> get lista => UnmodifiableListView(_lista);
 
-  saveAll(List<Produto> produtos) {
-    for (var produto in produtos) {
+  saveAll(Produto produto) {
       if (!_lista.contains(produto)) _lista.add(produto);
-    }
     notifyListeners();
   }
 

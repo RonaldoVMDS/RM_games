@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rm_games/componentes/produtos_carrinho.dart';
+import 'package:provider/provider.dart';
+import 'package:rm_games/repositorios/carrinho_repositorio.dart';
 
 class Carrinho extends StatefulWidget {
   const Carrinho({Key? key}) : super(key: key);
@@ -16,27 +17,104 @@ class _CarrinhoState extends State<Carrinho> {
         elevation: 0.2,
         title: const Text('Meu Carrinho'),
         actions: <Widget>[
-          IconButton(icon: const Icon(Icons.search), color: Colors.white, onPressed: () {  },),
+          IconButton(
+            icon: const Icon(Icons.search),
+            color: Colors.white,
+            onPressed: () {},
+          ),
         ],
       ),
-
-      body: const ProdutosCarrinho(),
-
+      body: Card(
+        child:
+            Consumer<CarrinhoRepositorio>(builder: (context, produtos, child) {
+          return produtos.lista.isEmpty
+              ? const ListTile(
+                  leading: Icon(Icons.close_sharp),
+                  title: Text('Ainda não há produtos no carrinho'),
+                )
+              : ListView.builder(
+                  itemCount: produtos.lista.length,
+                  itemBuilder: (context, index) => ListTile(
+                    leading: Image.asset(
+                      produtos.lista[index].prodFoto[0],
+                      width: 80,
+                      height: 80,
+                    ),
+                    title: Text(produtos.lista[index].prodNome),
+                    subtitle: Column(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            //plataforma
+                            const Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Text(
+                                "Plataforma: ",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: Text(
+                                  produtos.lista[index].prodPlataforma,
+                                  style: const TextStyle(fontSize: 12),
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            const Padding(
+                              padding: EdgeInsets.all(0),
+                              child: Text(
+                                "Lançamento:",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(1),
+                                child: Text(
+                                  produtos.lista[index].prodLancamento,
+                                  style: const TextStyle(fontSize: 12),
+                                )),
+                          ],
+                        ),
+                        Container(
+                          alignment: Alignment.topLeft,
+                          child: Text('R\$: ${produtos.lista[index].prodPreco}',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 14, 133, 16))),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+        }),
+      ),
       bottomNavigationBar: Container(
         color: Colors.black.withOpacity(0.4),
         child: Row(
           children: <Widget>[
             const Expanded(
               child: ListTile(
-                title: Text("Total", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
-                subtitle: Text("R\$: 120", style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 255, 0))),
+                title: Text("Total",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white)),
+                subtitle: Text("R\$: 120",
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 0, 255, 0))),
               ),
+            ),
+            Expanded(
+              child: MaterialButton(
+                onPressed: () {},
+                color: const Color.fromARGB(255, 14, 133, 16),
+                child:
+                    const Text("Pagar", style: TextStyle(color: Colors.white)),
               ),
-
-              Expanded(
-                child: MaterialButton(onPressed: (){}, color: const Color.fromARGB(255, 14, 133, 16),
-                child: const Text("Pagar", style: TextStyle(color: Colors.white)),),
-                )
+            )
           ],
         ),
       ),

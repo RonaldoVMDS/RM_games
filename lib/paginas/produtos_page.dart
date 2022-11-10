@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:rm_games/componentes/carrossel_imagens.dart';
-// ignore: import_of_legacy_library_into_null_safe
-
-//----------//
-
-import 'package:rm_games/componentes/lista_categorias.dart';
-import 'package:rm_games/paginas/carrinho.dart';
+import 'package:rm_games/models/produto.dart';
 import 'package:rm_games/paginas/produto_detalhes.dart';
-import 'package:rm_games/paginas/produtos_page.dart';
 import 'package:rm_games/repositorios/produto_repositorio.dart';
-import 'package:rm_games/servicos/auth_service.dart';
-import 'package:provider/provider.dart';
+import '../componentes/lista_categorias.dart';
+import 'login.dart';
+import 'carrinho.dart';
+import 'tela_principal.dart';
 
-import '../models/produto.dart';
-
-class TelaPrincipal extends StatefulWidget {
-  const TelaPrincipal({Key? key}) : super(key: key);
+class ProdutosPage extends StatefulWidget {
+  const ProdutosPage({Key? key}) : super(key: key);
 
   @override
-  State<TelaPrincipal> createState() => _TelaPrincipalState();
+  State<ProdutosPage> createState() => _ProdutosPageState();
 }
 
-class _TelaPrincipalState extends State<TelaPrincipal> {
+class _ProdutosPageState extends State<ProdutosPage> {
   mostrarDetalhes(Produto produto) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => ProdutoDetalhes(produto: produto)));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => ProdutoDetalhes(produto: produto)));
   }
 
   @override
@@ -100,7 +92,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               ),
             ),
             InkWell(
-              onTap: () => context.read<AuthService>().logout(),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Login()));
+              },
               child: const ListTile(
                 title: Text('Sair'),
                 leading: Icon(Icons.logout_sharp),
@@ -109,12 +104,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           ],
         ),
       ),
-      body: Column(
-        //começo do corpo da pag inicial
+      body: ListView(
+        //começo do corpo da pag produtos
         children: <Widget>[
-          //banner
-          carrosselImagens,
-          //banner
           //Texto categorias
           const Padding(
             padding: EdgeInsets.all(12.0),
@@ -132,29 +124,29 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           const ListaCategorias(),
           //Fim Lista de categorias
 
-          //Texto Lançamentos
+          //Texto Jogos Ação
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
+
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                const Text(
-                  "Lançamentos",
+                 const Text(
+                  "Jogos de ação  ",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 14, 133, 16)),
                 ),
-                const Icon(Icons.star, color: Colors.orange),
+                const Icon(Icons.videogame_asset_outlined, color: Colors.black),
               ],
             ),
           ),
+          //Fim texto Jogos Ação
+          //Grid de jogos Ação
 
-          //Fim texto Lançamentos
-
-          //Grid de jogos em lançamento
-
-          Flexible(
+          SizedBox(
+            height: 600.00,
             child: GridView.builder(
               itemCount: tabela.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -162,41 +154,39 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               itemBuilder: (context, int produto) => Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                  onTap: () => mostrarDetalhes(tabela[produto]),
-                  child: GridTile(
-                    footer: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: ListTile(
-                        leading: Container(
-                          width: 60,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            tabela[produto].prodNome,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
+                    onTap: () => mostrarDetalhes(tabela[produto]),
+                child: GridTile(
+                  footer: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: ListTile(
+                      leading: Container(
+                        width: 60,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          tabela[produto].prodNome,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
-                        title: Container(
-                            width: 35,
-                            alignment: Alignment.centerRight,
-                            child: Text("R\$: ${tabela[produto].prodPreco}",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 38, 255, 45)))),
                       ),
+                      title: Container(
+                          width: 35,
+                          alignment: Alignment.centerRight,
+                          child: Text("R\$: ${tabela[produto].prodPreco}",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 38, 255, 45)))),
                     ),
-                    child: Image.asset(
-                      tabela[produto].prodFoto[0],
-                      fit: BoxFit.cover,
-                    ),
+                  ),
+                  child: Image.asset(
+                    tabela[produto].prodFoto[0],
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+              ),
             ),
           )
-
-          //Grid de jogos em lançamento
         ],
       ),
     );
