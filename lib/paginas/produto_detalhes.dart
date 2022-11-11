@@ -9,10 +9,7 @@ import 'package:rm_games/repositorios/carrinho_repositorio.dart';
 class ProdutoDetalhes extends StatefulWidget {
   final Produto produto;
 
-  const ProdutoDetalhes({
-    Key? key,
-    required this.produto
-  }) : super(key: key);
+  const ProdutoDetalhes({Key? key, required this.produto}) : super(key: key);
 
   @override
   State<ProdutoDetalhes> createState() => _ProdutoDetalhesState();
@@ -20,7 +17,7 @@ class ProdutoDetalhes extends StatefulWidget {
 
 class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
   late CarrinhoRepositorio carrinho;
-
+  
   @override
   Widget build(BuildContext context) {
     carrinho = Provider.of<CarrinhoRepositorio>(context);

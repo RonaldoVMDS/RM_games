@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rm_games/models/produto.dart';
+import 'package:rm_games/paginas/admin.dart';
 import 'package:rm_games/paginas/produto_detalhes.dart';
 import 'package:rm_games/repositorios/produto_repositorio.dart';
 import '../componentes/lista_categorias.dart';
@@ -16,7 +18,26 @@ class ProdutosPage extends StatefulWidget {
 
 class _ProdutosPageState extends State<ProdutosPage> {
   mostrarDetalhes(Produto produto) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ProdutoDetalhes(produto: produto)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => ProdutoDetalhes(produto: produto)));
+  }
+
+  final _firebaseAuth = FirebaseAuth.instance;
+  String email = '';
+
+  @override
+  // ignore: must_call_super
+  void initState() {
+    recebeUsuario();
+  }
+
+  recebeUsuario() async {
+    User? usuario = _firebaseAuth.currentUser;
+    if (usuario != null) {
+      setState(() {
+        email = usuario.email!;
+      });
+    }
   }
 
   @override
@@ -48,8 +69,8 @@ class _ProdutosPageState extends State<ProdutosPage> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: const Text('Ronaldo Vinicius'),
-              accountEmail: const Text('ronaldovinicius@alunos.utfpr.edu.br'),
+              accountName: const Text('Usuário Teste'),
+              accountEmail: Text(email),
               currentAccountPicture: GestureDetector(
                 child: const CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 7, 175, 180),
@@ -94,6 +115,16 @@ class _ProdutosPageState extends State<ProdutosPage> {
             InkWell(
               onTap: () {
                 Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Admin()));
+              },
+              child: const ListTile(
+                title: Text('Administrador'),
+                leading: Icon(Icons.person, color: Colors.yellow),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const Login()));
               },
               child: const ListTile(
@@ -128,10 +159,9 @@ class _ProdutosPageState extends State<ProdutosPage> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Row(
-
               // ignore: prefer_const_literals_to_create_immutables
               children: [
-                 const Text(
+                const Text(
                   "Jogos de ação  ",
                   style: TextStyle(
                       fontSize: 18,
@@ -154,36 +184,36 @@ class _ProdutosPageState extends State<ProdutosPage> {
               itemBuilder: (context, int produto) => Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: InkWell(
-                    onTap: () => mostrarDetalhes(tabela[produto]),
-                child: GridTile(
-                  footer: Container(
-                    color: Colors.black.withOpacity(0.5),
-                    child: ListTile(
-                      leading: Container(
-                        width: 60,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          tabela[produto].prodNome,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                  onTap: () => mostrarDetalhes(tabela[produto]),
+                  child: GridTile(
+                    footer: Container(
+                      color: Colors.black.withOpacity(0.5),
+                      child: ListTile(
+                        leading: Container(
+                          width: 60,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            tabela[produto].prodNome,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
+                        title: Container(
+                            width: 35,
+                            alignment: Alignment.centerRight,
+                            child: Text("R\$: ${tabela[produto].prodPreco}",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 38, 255, 45)))),
                       ),
-                      title: Container(
-                          width: 35,
-                          alignment: Alignment.centerRight,
-                          child: Text("R\$: ${tabela[produto].prodPreco}",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 38, 255, 45)))),
+                    ),
+                    child: Image.asset(
+                      tabela[produto].prodFoto[0],
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  child: Image.asset(
-                    tabela[produto].prodFoto[0],
-                    fit: BoxFit.cover,
-                  ),
                 ),
-              ),
               ),
             ),
           )

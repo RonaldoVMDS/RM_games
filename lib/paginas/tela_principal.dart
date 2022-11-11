@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rm_games/componentes/carrossel_imagens.dart';
-// ignore: import_of_legacy_library_into_null_safe
 
 //----------//
 
 import 'package:rm_games/componentes/lista_categorias.dart';
+import 'package:rm_games/paginas/admin.dart';
 import 'package:rm_games/paginas/carrinho.dart';
 import 'package:rm_games/paginas/produto_detalhes.dart';
 import 'package:rm_games/paginas/produtos_page.dart';
@@ -25,6 +26,26 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   mostrarDetalhes(Produto produto) {
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => ProdutoDetalhes(produto: produto)));
+  }
+
+  final _firebaseAuth = FirebaseAuth.instance;
+  String email = '';
+
+  @override
+  // ignore: must_call_super
+  void initState() { 
+    recebeUsuario();
+    
+  }
+
+  recebeUsuario() async {
+    User? usuario = _firebaseAuth.currentUser;
+    if(usuario != null){
+      setState(() {
+      email = usuario.email!;
+    });
+    }
+    
   }
 
   @override
@@ -56,8 +77,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: const Text('Ronaldo Vinicius'),
-              accountEmail: const Text('ronaldovinicius@alunos.utfpr.edu.br'),
+              accountName: const Text('Usuário Teste'),
+              accountEmail: Text(email),
               currentAccountPicture: GestureDetector(
                 child: const CircleAvatar(
                   backgroundColor: Color.fromARGB(255, 7, 175, 180),
@@ -97,6 +118,16 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               child: const ListTile(
                 title: Text('Meu Carrinho'),
                 leading: Icon(Icons.shopping_cart, color: Colors.green),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Admin()));
+              },
+              child: const ListTile(
+                title: Text('Administrador'),
+                leading: Icon(Icons.person, color: Colors.yellow),
               ),
             ),
             InkWell(
