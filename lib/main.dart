@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rm_games/meu_aplicativo.dart';
 import 'package:rm_games/repositorios/carrinho_repositorio.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:rm_games/repositorios/produto_repositorio.dart';
 import 'package:rm_games/servicos/auth_service.dart';
 import 'firebase_options.dart';
 
@@ -15,8 +16,10 @@ void main() async{
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AuthService()),
+        ChangeNotifierProvider(create: (context) => ProdutoRepositorio()),
         ChangeNotifierProvider(create: (context) => CarrinhoRepositorio(
           auth: context.read<AuthService>(),
+          produtos: context.read<ProdutoRepositorio>(),
         )),
     ], 
   child: const MeuAplicativo()));

@@ -12,8 +12,9 @@ class CarrinhoRepositorio extends ChangeNotifier {
   final List<Produto> _lista = [];
   late FirebaseFirestore db;
   late AuthService auth;
+  ProdutoRepositorio produtos;
 
-  CarrinhoRepositorio({required this.auth}) {
+  CarrinhoRepositorio({required this.auth, required this.produtos}) {
     _startRepository();
   }
 
@@ -31,7 +32,7 @@ class CarrinhoRepositorio extends ChangeNotifier {
       final snapshot =
           await db.collection('usuarios/${auth.usuario!.uid}/carrinho').get();
       for (var doc in snapshot.docs) {
-        Produto produto = ProdutoRepositorio.tabela
+        Produto produto = produtos.tabela
             .firstWhere((produto) => produto.prodNome == doc.get('produto'));
         _lista.add(produto);
         notifyListeners();

@@ -35,10 +35,8 @@ class _CarrinhoState extends State<Carrinho> {
                 : ListView.builder(
                     itemCount: produtos.lista.length,
                     itemBuilder: (context, index) {
-                      return
-                      ListTile(
-                        leading: Image.asset(
-                          produtos.lista[index].prodFoto[0],
+                      return ListTile(
+                        leading: Image.network(produtos.lista[index].prodFoto[0],
                           width: 80,
                           height: 80,
                         ),
@@ -134,7 +132,8 @@ class _CarrinhoState extends State<Carrinho> {
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white)),
-                          subtitle: Text("R\$: ${produtos.somarTudo().toStringAsFixed(2)}",
+                          subtitle: Text(
+                              "R\$: ${produtos.somarTudo().toStringAsFixed(2)}",
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 0, 255, 0))),

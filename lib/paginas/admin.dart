@@ -1,7 +1,10 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:rm_games/paginas/adicionar_produto.dart';
+import 'package:rm_games/paginas/minha_conta.dart';
 
 import 'carrinho.dart';
 import 'login.dart';
@@ -24,7 +27,42 @@ class _AdminState extends State<Admin> {
   MaterialColor notActive = Colors.grey;
   TextEditingController categoryController = TextEditingController();
   TextEditingController brandController = TextEditingController();
-  
+  final _firebaseAuth = FirebaseAuth.instance;
+  String email = '';
+  String uid = '';
+  List<Reference> refs = [];
+  String imagem_usuario = '';
+  bool loading = true;
+
+  @override
+  // ignore: must_call_super
+  void initState() {
+    recebeUsuario();
+    loadImages();
+  }
+
+  loadImages() async {
+    refs = (await FirebaseStorage.instance.ref('images').listAll()).items;
+    for (var ref in refs) {
+      if (ref.fullPath == 'images/$uid.jpg') {
+        imagem_usuario = await ref.getDownloadURL();
+      }
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  recebeUsuario() async {
+    User? usuario = _firebaseAuth.currentUser;
+    if (usuario != null) {
+      setState(() {
+        email = usuario.email!;
+        uid = usuario.uid;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,58 +99,86 @@ class _AdminState extends State<Admin> {
           foregroundColor: Colors.green,
         ),
         drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: const Text('Ronaldo Vinicius'),
-              accountEmail: const Text('ronaldovinicius@alunos.utfpr.edu.br'),
-              currentAccountPicture: GestureDetector(
-                child: const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 7, 175, 180),
-                  child: Icon(Icons.person, color: Colors.white),
+          child: ListView(
+            children: <Widget>[
+              UserAccountsDrawerHeader(
+                accountName: const Text('Usuario de teste'),
+                accountEmail: Text(email),
+                currentAccountPicture: GestureDetector(
+                  child: loading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : CircleAvatar(
+                          radius: 75,
+                          backgroundColor:
+                              const Color.fromARGB(255, 7, 175, 180),
+                          backgroundImage: imagem_usuario != ''
+                              ? NetworkImage(imagem_usuario)
+                              : const NetworkImage('')),
                 ),
               ),
-            ),
-            
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const TelaPrincipal()));
-              },
-              child: const ListTile(
-                title: Text('Página Inicial'),
-                leading: Icon(Icons.home, color: Colors.blue),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const TelaPrincipal()));
+                },
+                child: const ListTile(
+                  title: Text('Página Inicial'),
+                  leading: Icon(Icons.home, color: Colors.blue),
+                ),
               ),
-            ),
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const ProdutosPage()));
-              },
-              child: const ListTile(
-                title: Text('Todos os Jogos'),
-                leading: Icon(Icons.gamepad, color: Colors.red),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProdutosPage()));
+                },
+                child: const ListTile(
+                  title: Text('Todos os Jogos'),
+                  leading: Icon(Icons.gamepad, color: Colors.red),
+                ),
               ),
-            ),
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Carrinho()));
-              },
-              child: const ListTile(
-                title: Text('Meu Carrinho'),
-                leading: Icon(Icons.shopping_cart, color: Colors.green),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Carrinho()));
+                },
+                child: const ListTile(
+                  title: Text('Meu Carrinho'),
+                  leading: Icon(Icons.shopping_cart, color: Colors.green),
+                ),
               ),
-            ),
-            InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
-              },
-              child: const ListTile(
-                title: Text('Sair'),
-                leading: Icon(Icons.logout_sharp),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MinhaConta()));
+                },
+                child: const ListTile(
+                  title: Text('Minha Conta'),
+                  leading: Icon(Icons.person),
+                ),
               ),
-            ),
-          ],
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
+                },
+                child: const ListTile(
+                  title: Text('Sair'),
+                  leading: Icon(Icons.logout_sharp),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
         body: _loadScreen());
   }
 
@@ -159,7 +225,6 @@ class _AdminState extends State<Admin> {
                           )),
                     ),
                   ),
-                  
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(

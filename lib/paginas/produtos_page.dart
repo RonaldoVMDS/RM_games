@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:rm_games/models/produto.dart';
 import 'package:rm_games/paginas/admin.dart';
 import 'package:rm_games/paginas/produto_detalhes.dart';
 import 'package:rm_games/repositorios/produto_repositorio.dart';
 import '../componentes/lista_categorias.dart';
+import 'package:provider/provider.dart';
 import 'login.dart';
 import 'carrinho.dart';
 import 'tela_principal.dart';
@@ -24,11 +26,28 @@ class _ProdutosPageState extends State<ProdutosPage> {
 
   final _firebaseAuth = FirebaseAuth.instance;
   String email = '';
+  String uid = '';
+  List<Reference> refs = [];
+  String imagem_usuario = '';
+  bool loading = true;
 
   @override
   // ignore: must_call_super
   void initState() {
     recebeUsuario();
+    loadImages();
+  }
+
+  loadImages() async {
+    refs = (await FirebaseStorage.instance.ref('images').listAll()).items;
+    for (var ref in refs) {
+      if (ref.fullPath == 'images/$uid.jpg') {
+        imagem_usuario = await ref.getDownloadURL();
+      }
+      setState(() {
+        loading = false;
+      });
+    }
   }
 
   recebeUsuario() async {
@@ -36,13 +55,18 @@ class _ProdutosPageState extends State<ProdutosPage> {
     if (usuario != null) {
       setState(() {
         email = usuario.email!;
+        uid = usuario.uid;
       });
     }
   }
 
+  late List<Produto> tabela;
+  late ProdutoRepositorio produtos;
+
   @override
   Widget build(BuildContext context) {
-    final tabela = ProdutoRepositorio.tabela;
+    produtos = context.watch<ProdutoRepositorio>();
+    tabela = produtos.tabela;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.2,
@@ -72,10 +96,16 @@ class _ProdutosPageState extends State<ProdutosPage> {
               accountName: const Text('Usuário Teste'),
               accountEmail: Text(email),
               currentAccountPicture: GestureDetector(
-                child: const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 7, 175, 180),
-                  child: Icon(Icons.person, color: Colors.white),
-                ),
+                child: loading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : CircleAvatar(
+                        radius: 75,
+                        backgroundColor: const Color.fromARGB(255, 7, 175, 180),
+                        backgroundImage: imagem_usuario != ''
+                            ? NetworkImage(imagem_usuario)
+                            : const NetworkImage('')),
               ),
             ),
             InkWell(
@@ -208,7 +238,7 @@ class _ProdutosPageState extends State<ProdutosPage> {
                                     color: Color.fromARGB(255, 38, 255, 45)))),
                       ),
                     ),
-                    child: Image.asset(
+                    child: Image.network(
                       tabela[produto].prodFoto[0],
                       fit: BoxFit.cover,
                     ),

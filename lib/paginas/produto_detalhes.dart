@@ -17,7 +17,7 @@ class ProdutoDetalhes extends StatefulWidget {
 
 class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
   late CarrinhoRepositorio carrinho;
-  
+
   @override
   Widget build(BuildContext context) {
     carrinho = Provider.of<CarrinhoRepositorio>(context);
@@ -52,15 +52,14 @@ class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
               ),
               items: [
                 (widget.produto.prodFoto[0]),
-                (widget.produto.prodFoto[1]),
-                (widget.produto.prodFoto[2])
               ].map((i) {
                 return Builder(
                   builder: (BuildContext context) {
                     return SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child:
-                            FittedBox(fit: BoxFit.fill, child: Image.asset(i)));
+                        child: FittedBox(
+                            fit: BoxFit.fill,
+                            child: Image.network(i)));
                   },
                 );
               }).toList(),
